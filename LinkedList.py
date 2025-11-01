@@ -58,7 +58,6 @@ head = ll.insert_at_end(head, 20)
 ll.display(head)  # Output: 10 -> 20 -> None
 """
 
-
 """
     Create a new node for the linked list.
     
@@ -83,8 +82,7 @@ ll.display(head)  # Output: 10 -> 20 -> None
     node = create_node(10)
     # Returns: {'data': 10, 'next': None}
     """
-def create_node(data):
-    return {'data': data, 'next': None}
+
 
 
 """
@@ -117,10 +115,6 @@ def create_node(data):
     head = insert_at_beginning(head, 10)  # List: 10 -> None
     head = insert_at_beginning(head, 5)   # List: 5 -> 10 -> None
     """
-def insert_at_beginning(head, data):
-    new_node = create_node(data)
-    new_node['next'] = head
-    return new_node
 
 
 """
@@ -158,18 +152,6 @@ def insert_at_beginning(head, data):
     head = insert_at_end(head, 20)  # List: 10 -> 20 -> None
     head = insert_at_end(head, 30)  # List: 10 -> 20 -> 30 -> None
     """
-def insert_at_end(head, data):
-    new_node = create_node(data)
-    
-    if head is None:
-        return new_node
-    
-    current = head
-    while current['next'] is not None:
-        current = current['next']
-    
-    current['next'] = new_node
-    return head
 
 
     """
@@ -211,23 +193,6 @@ def insert_at_end(head, data):
     head = delete_node(head, 5)    # List: 10 -> 30 -> None
     head = delete_node(head, 100)  # List: 10 -> 30 -> None (no change)
     """
-def delete_node(head, data):
-    if head is None:
-        return None
-    
-    # If head node contains the data
-    if head['data'] == data:
-        return head['next']
-    
-    current = head
-    while current['next'] is not None:
-        if current['next']['data'] == data:
-            current['next'] = current['next']['next']
-            return head
-        current = current['next']
-    
-    return head
-
 
  """
     Search for a node containing the specified data value.
@@ -265,20 +230,7 @@ def delete_node(head, data):
     position = search(head, 5)    # Returns: 0
     position = search(head, 100)  # Returns: -1 (not found)
     """
-def search(head, data):
-    current = head
-    position = 0
-    
-    while current is not None:
-        if current['data'] == data:
-            return position
-        current = current['next']
-        position += 1
-    
-    return -1
 
-
-def display(head):
     """
     Display all nodes in the linked list in a visual format.
     
@@ -319,18 +271,7 @@ def display(head):
     display(None)
     # Output: List is empty
     """
-    if head is None:
-        print("List is empty")
-        return
-    
-    current = head
-    elements = []
-    
-    while current is not None:
-        elements.append(str(current['data']))
-        current = current['next']
-    
-    print(" -> ".join(elements) + " -> None")
+
 
 
     """
@@ -367,12 +308,120 @@ def display(head):
     # Empty list:
     length = get_length(None)  # Returns: 0
     """
+# I delete the all the codes that Professor gave because While im studying,
+# I will write down all the codes here instead of seperate its helping me to see all and figure it out
+# LinkedList.py
+
+"""
+Linked List implementation using functions (no OOP).
+"""
+
+def create_node(data):
+    return {'data': data, 'next': None}
+
+
+def insert_at_beginning(head, data):
+    new_node = create_node(data)
+    new_node['next'] = head
+    return new_node
+
+
+def insert_at_end(head, data):
+    new_node = create_node(data)
+    if head is None:
+        return new_node
+    current = head
+    while current['next'] is not None:
+        current = current['next']
+    current['next'] = new_node
+    return head
+
+
+def delete_node(head, data):
+    if head is None:
+        return None
+    if head['data'] == data:
+        return head['next']
+    current = head
+    while current['next'] is not None:
+        if current['next']['data'] == data:
+            current['next'] = current['next']['next']
+            return head
+        current = current['next']
+    return head
+
+
+def search(head, data):
+    current = head
+    position = 0
+    while current is not None:
+        if current['data'] == data:
+            return position
+        current = current['next']
+        position += 1
+    return -1
+
+
+def display(head):
+    if head is None:
+        print("List is empty")
+        return
+    current = head
+    elements = []
+    while current is not None:
+        elements.append(str(current['data']))
+        current = current['next']
+    print(" -> ".join(elements) + " -> None")
+
+
 def get_length(head):
     count = 0
     current = head
-    
     while current is not None:
         count += 1
         current = current['next']
-    
     return count
+
+
+def enqueue(head, data):
+    return insert_at_end(head, data)
+
+
+def dequeue(head):
+    if head is None:
+        return None, None
+    removed = head['data']
+    head = head['next']
+    return head, removed
+
+
+def deque_add_front(head, data):
+    return insert_at_beginning(head, data)
+
+
+def deque_add_back(head, data):
+    return insert_at_end(head, data)
+
+
+def deque_remove_front(head):
+    if head is None:
+        return None, None
+    removed = head['data']
+    head = head['next']
+    return head, removed
+
+
+def deque_remove_back(head):
+    if head is None:
+        return None, None
+    if head['next'] is None:
+        return None, head['data']
+    prev = head
+    curr = head['next']
+    while curr['next'] is not None:
+        prev = curr
+        curr = curr['next']
+    removed = curr['data']
+    prev['next'] = None
+    return head, removed
+ 
